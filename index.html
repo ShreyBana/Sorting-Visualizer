@@ -9,9 +9,9 @@
 </head>
 <body>
 	<nav id="nav-bar">
-		<button>Generate New</button>
-		<button>Sort</button>	
-		<input type="range" id="size-slider" min="10" max="100">
+		<button id="gen-button">Generate New</button>
+		<button id="sort-button">Sort</button>	
+		<input type="range" id="size-slider" min="10" max="100" value="20">
 		<form>
 			<input type="radio" name="sorting-algo" value="0">
 			<label>Selection Sort</label>
@@ -25,5 +25,8 @@
 			<label>Quick Sort</label>
 		</form>
 	</nav>
+	<div id="array">
+	</div>
+	<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>

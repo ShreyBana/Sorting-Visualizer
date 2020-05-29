@@ -9,7 +9,7 @@
 	border: none;
 }
 html, body {
-	height: auto;
+	height: 100%;
 	margin: 0px;
 	font-family: Google Sans,Roboto,Helvetica Neue, 'Roboto Mono', monospace,sans-serif;
 	background-color: white;
@@ -28,7 +28,7 @@ button {
 button:hover {
 	cursor: pointer;
 	border-radius: 20px;
-	color: dodgerblue;
+	color: hsl(225, 100%, 62%);
 }
 form {
 	padding: 5px 10px;	
@@ -50,4 +50,21 @@ label {
 }	
 #size-slider:hover {
 	cursor: pointer;
+}
+#array {
+	margin: 0px 100px 0px 100px;
+	width: 85%;
+	height: 88%;
+	display: flex;
+	align-items: flex-end;
+}
+.element {
+	display: inline-block;
+	background-color: dodgerblue;
+	opacity: 0.7;
+	border: 1px solid white;
+}
+.highlighted {
+	background-color: green;
+	opacity: 0.5;
 }
