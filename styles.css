@@ -8,10 +8,12 @@
 	outline: none;
 	border: none;
 }
-html, body {
+html,
+body {
 	height: 100%;
 	margin: 0px;
-	font-family: Google Sans,Roboto,Helvetica Neue, 'Roboto Mono', monospace,sans-serif;
+	font-family: Google Sans, Roboto, Helvetica Neue, "Roboto Mono", monospace,
+		sans-serif;
 	background-color: white;
 }
 button {
@@ -20,7 +22,7 @@ button {
 	border: none;
 	background-color: transparent;
 	margin: 0 10px;
-	font-style: 'Roboto Mono';
+	font-style: "Roboto Mono";
 	color: #909090;
 	font-size: 20px;
 	padding: 5px 10px;
@@ -31,7 +33,7 @@ button:hover {
 	color: hsl(225, 100%, 62%);
 }
 form {
-	padding: 5px 10px;	
+	padding: 5px 10px;
 }
 input[type="radio"] {
 	margin: 0 10px;
@@ -47,7 +49,7 @@ label {
 #size-slider {
 	position: absolute;
 	top: 16px;
-}	
+}
 #size-slider:hover {
 	cursor: pointer;
 }
