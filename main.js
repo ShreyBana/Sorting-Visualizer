@@ -1,6 +1,12 @@
 const arrayDiv = document.querySelector("#array");
 const inputSize = document.querySelector("#size-slider");
 const sortForm = document.querySelector("form");
+var generateButton = document.querySelector("#generator");
+generateButton.onclick = generateNew;
+var sortButton = document.querySelector("#sort");
+sortButton.onclick = sort;
+var breakFlag = false;
+var isSorting = false;
 let array = [];
 
 function print() {
@@ -39,7 +45,14 @@ function swapNodes(a, b) {
 	b.setHeight();
 }
 
+function removeHighlights() {
+	array.forEach((dNode) => {
+		dNode.span.classList.remove("highlighted");
+	});
+}
+
 function generateNew() {
+	if (isSorting) breakFlag = true;
 	var size = inputSize.value;
 	const width = arrayDiv.clientWidth / size;
 	arrayDiv.innerHTML = "";
@@ -53,9 +66,10 @@ function generateNew() {
 }
 
 async function selectionSort() {
-	for (i = 0; i < array.length; i++) {
+	sortButton.disabled = true;
+	for (var i = 0; i < array.length && !breakFlag; i++) {
 		var min = i;
-		for (j = i + 1; j < array.length; j++) {
+		for (var j = i + 1; j < array.length && !breakFlag; j++) {
 			array[j].toggleHighlight();
 			await sleep(1);
 			if (array[min].number > array[j].number) min = j;
@@ -63,11 +77,16 @@ async function selectionSort() {
 		}
 		if (min != i) swapNodes(array[i], array[min]);
 	}
+	if (breakFlag) removeHighlights();
+	isSorting = false;
+	breakFlag = false;
+	sortButton.disabled = false;
 }
 
 async function bubbleSort() {
-	for (var i = 0; i < array.length; i++) {
-		for (var j = 0; j < array.length - i - 1; j++) {
+	sortButton.disabled = true;
+	for (var i = 0; i < array.length && !breakFlag; i++) {
+		for (var j = 0; j < array.length - i - 1 && !breakFlag; j++) {
 			array[j].toggleHighlight();
 			await sleep(1);
 			array[j].toggleHighlight();
@@ -75,13 +94,18 @@ async function bubbleSort() {
 				swapNodes(array[j], array[j + 1]);
 		}
 	}
+	if (breakFlag) removeHighlights();
+	isSorting = false;
+	breakFlag = false;
+	sortButton.disabled = false;
 }
 
 async function insertionSort() {
-	for (var i = 1; i < array.length; i++) {
+	sortButton.disabled = true;
+	for (var i = 1; i < array.length && !breakFlag; i++) {
 		var key = array[i].number;
 		var j = i - 1;
-		while (j >= 0 && array[j].number > key) {
+		while (j >= 0 && array[j].number > key && !breakFlag) {
 			array[j].toggleHighlight();
 			await sleep(1);
 			array[j].toggleHighlight();
@@ -92,10 +116,14 @@ async function insertionSort() {
 		array[j + 1].number = key;
 		array[j + 1].setHeight();
 	}
+	if (breakFlag) removeHighlights();
+	isSorting = false;
+	breakFlag = false;
+	sortButton.disabled = false;
 }
 
 async function mergeSortHelper(l, r) {
-	if (l < r) {
+	if (l < r && !breakFlag) {
 		var mid = l + Math.floor((r - l) / 2);
 		await mergeSortHelper(l, mid);
 		await mergeSortHelper(mid + 1, r);
@@ -103,13 +131,13 @@ async function mergeSortHelper(l, r) {
 		var size2 = r - mid;
 		let arr1 = [];
 		let arr2 = [];
-		for (i = l; i <= mid; i++) {
+		for (var i = l; i <= mid && !breakFlag; i++) {
 			array[i].toggleHighlight();
 			await sleep(5);
 			array[i].toggleHighlight();
 			arr1[i - l] = array[i].number;
 		}
-		for (i = mid + 1; i <= r; i++) {
+		for (var i = mid + 1; i <= r && !breakFlag; i++) {
 			array[i].toggleHighlight();
 			await sleep(5);
 			array[i].toggleHighlight();
@@ -118,19 +146,19 @@ async function mergeSortHelper(l, r) {
 		var i = 0;
 		var j = 0;
 		var k = l;
-		while (i < size1 && j < size2) {
+		while (i < size1 && j < size2 && !breakFlag) {
 			await sleep(1);
 			if (arr1[i] < arr2[j]) array[k].number = arr1[i++];
 			else array[k].number = arr2[j++];
 			array[k].setHeight();
 			k++;
 		}
-		while (i < size1) {
+		while (i < size1 && !breakFlag) {
 			array[k].number = arr1[i++];
 			array[k].setHeight();
 			k++;
 		}
-		while (j < size2) {
+		while (j < size2 && !breakFlag) {
 			array[k].number = arr2[j++];
 			array[k].setHeight();
 			k++;
@@ -138,14 +166,19 @@ async function mergeSortHelper(l, r) {
 	}
 }
 
-function mergeSort() {
-	mergeSortHelper(0, array.length - 1);
+async function mergeSort() {
+	sortButton.disabled = true;
+	await mergeSortHelper(0, array.length - 1);
+	if (breakFlag) removeHighlights();
+	isSorting = false;
+	breakFlag = false;
+	sortButton.disabled = false;
 }
 
 async function partition(l, r) {
 	var x = array[l].number;
 	var i = l;
-	for (var j = l + 1; j <= r; j++) {
+	for (var j = l + 1; j <= r && !breakFlag; j++) {
 		array[j].toggleHighlight();
 		await sleep(1);
 		array[j].toggleHighlight();
@@ -160,18 +193,24 @@ async function partition(l, r) {
 }
 
 async function quickSortHelper(l, r) {
-	if (l < r) {
+	if (l < r && !breakFlag) {
 		var pivot = await partition(l, r);
-		quickSortHelper(l, pivot - 1);
-		quickSortHelper(pivot + 1, r);
+		await quickSortHelper(l, pivot - 1);
+		await quickSortHelper(pivot + 1, r);
 	}
 }
 
-function quickSort() {
-	quickSortHelper(0, array.length - 1);
+async function quickSort() {
+	sortButton.disabled = true;
+	await quickSortHelper(0, array.length - 1);
+	if (breakFlag) removeHighlights();
+	isSorting = false;
+	breakFlag = false;
+	sortButton.disabled = false;
 }
 
-async function sort() {
+function sort() {
+	isSorting = true;
 	var value = sortForm["sorting-algo"].value;
 	console.log(value);
 	if (value == null) return;
@@ -181,6 +220,3 @@ async function sort() {
 	else if (value == 3) mergeSort();
 	else quickSort();
 }
-
-document.querySelector("#generator").onclick = generateNew;
-document.querySelector("#sort").onclick = sort;
