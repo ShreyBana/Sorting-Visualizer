@@ -9,12 +9,6 @@ var breakFlag = false;
 var isSorting = false;
 let array = [];
 
-function print() {
-	array.forEach((dNode) => {
-		console.log(dNode.number);
-	});
-}
-
 function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
