@@ -206,7 +206,6 @@ async function quickSort() {
 function sort() {
 	isSorting = true;
 	var value = sortForm["sorting-algo"].value;
-	console.log(value);
 	if (value == null) return;
 	else if (value == 0) selectionSort();
 	else if (value == 1) bubbleSort();
